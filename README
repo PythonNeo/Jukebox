@@ -1,17 +1,43 @@
 
-Get the pyspotify module.
-run jukebox.py
+Before running jukebox.py.
 
-1. wget -q -O - https://apt.mopidy.com/mopidy.gpg | sudo apt-key add -
+1. run install.sh
+2. create credentials.py 
+ -- 2.1. nano credentials.py 
+ -- 2.2 add these 4 lines below.
+ 
+username='yourspotifyname'
+passwd='password'
+playlist_uri = 'uri_id'
+queue_uri = 'uri_id'
 
-2. sudo wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/wheezy.list
-or
-2. sudo wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/jessie.list
+ -- 2.3 ctrl+x, yes for saving, enter.
 
-3. sudo apt-get update
-4. sudo apt-get install python-spotify
+3. go to your spotify, login create new list call queue list right click on
+queue list copy playlist uri and paste it on credentials.py under queue_uri ='HERE'.
+the playlist uri you do the same.
 
-5. sudo apt-get install python-pip python-alsaaudio
+4. Application keys
 
-6. sudo pip install Flask
-7. sudo pip install flask-socketio
+Every app that use libspotify needs its own libspotify application key.
+Application keys can be obtained automatically and free of charge from Spotify.
+
+Go to the Spotify developer pages and login using your Spotify account.
+Find the libspotify application keys management page and request an 
+application key for your application.
+Once the key is issued, download the “binary” version. 
+The “C code” version of the key will not work with pyspotify.
+If you place the application key in the same directory as your 
+application’s main Python file, pyspotify will automatically find it and use it. 
+If you want to keep the application key in another location, you’ll need to 
+set application_key in your session config or call load_application_key_file() 
+to load the session key file correctly.
+
+I put it in the same directory! 
+
+
+
+
+
+
+
