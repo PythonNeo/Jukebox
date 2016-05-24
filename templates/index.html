@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Yu</title>
+	<link rel="stylesheet" href="/static/css/style.css">
+	<link href='http://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<div class="player">
+		<div class="song">
+			<div class="artist"></div>
+			<div class="name">Odd Look ft. The Weeknd</div>
+		</div>
+		<div class="playarea">
+			<div class="prevSong"></div>
+			<div class="play"></div>
+			<div class="pause shown"></div>
+			<div class="nextSong"></div>
+		</div>
+	</div>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+	    var socket = io.connect('http://' + document.domain + ':' + location.port);
+	    socket.on('newSong', function(song) {
+	        $('.name').html(song);
+	    });
+
+	    $('.play, .pause').on('click', function() {
+	    	$('.play, .pause').toggleClass('shown');
+	    	if ($(this).hasClass('play'))
+	    		socket.emit('playback', 'play');
+	    	else
+	    		socket.emit('playback', 'pause');
+	    });
+	    $('.nextSong').on('click', function() {
+                socket.emit('playback', 'next', function(name) {
+                    $('.name').html(name);
+                });
+            });
+	</script>
+</body>
+</html>
