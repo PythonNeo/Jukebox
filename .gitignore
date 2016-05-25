@@ -4,3 +4,5 @@ tmp/
 *.save
 *key
 credentials.py
+*track.py
+test.py
