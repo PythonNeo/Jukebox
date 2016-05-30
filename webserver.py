@@ -27,9 +27,6 @@ def requires_auth(f):
             return authenticate()
         return f(*args, **kwargs)
     return decorated
-
-
-
 class Server(threading.Thread):
 
     def __init__(self, jukebox):
