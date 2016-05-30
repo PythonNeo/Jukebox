@@ -2,11 +2,40 @@ import threading
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 
+from functools import wraps
+from flask import request, Response
+
+
+def check_auth(username, password):
+    """This function is called to check if a username /
+    password combination is valid.
+    """
+    return username == 'admin' and password == '1234'
+
+def authenticate():
+    """Sends a 401 response that enables basic auth"""
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
+
+
 class Server(threading.Thread):
 
     def __init__(self, jukebox):
         threading.Thread.__init__(self)
         self.jukebox = jukebox
+
 
     def run(self):
         self.app = Flask(__name__)
@@ -40,6 +69,7 @@ class Server(threading.Thread):
             return render_template("queue.html")
 
         @self.app.route("/playstyring")
+	@requires_auth
         def control():
             return render_template("index.html")
 
